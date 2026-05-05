@@ -1,24 +1,25 @@
-from src.core.order_book import OrderBook
+from src.core.matching_engine import MatchingEngine
 from src.models.order import Order
 
 
 def main():
-    order_book = OrderBook()
+    engine = MatchingEngine()
 
-    buy_order_1 = Order(order_id="B1", side="buy", price=100.0, quantity=10)
-    buy_order_2 = Order(order_id="B2", side="buy", price=105.0, quantity=7)
-    sell_order_1 = Order(order_id="S1", side="sell", price=110.0, quantity=5)
-    sell_order_2 = Order(order_id="S2", side="sell", price=108.0, quantity=3)
+    engine.submit_order(Order(order_id="S1", side="sell", price=101.0, quantity=4))
+    engine.submit_order(Order(order_id="S2", side="sell", price=102.0, quantity=6))
 
-    order_book.add_order(buy_order_1)
-    order_book.add_order(buy_order_2)
-    order_book.add_order(sell_order_1)
-    order_book.add_order(sell_order_2)
+    trades = engine.submit_order(Order(order_id="B1", side="buy", price=102.0, quantity=7))
 
-    print("Buy orders:", order_book.buy_orders)
-    print("Sell orders:", order_book.sell_orders)
-    print("Best bid:", order_book.get_best_bid())
-    print("Best ask:", order_book.get_best_ask())
+    print("Generated trades:")
+    for trade in trades:
+        print(trade)
+
+    print("Best bid:", engine.order_book.get_best_bid())
+    print("Best ask:", engine.order_book.get_best_ask())
+
+    print("All orders:")
+    for order_id, order in engine.orders_by_id.items():
+        print(order_id, order)
 
 
 if __name__ == "__main__":

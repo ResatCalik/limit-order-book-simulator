@@ -5,6 +5,7 @@ on:
     branches:
       - main
       - feature/**
+      - docs/**
   pull_request:
     branches:
       - main
